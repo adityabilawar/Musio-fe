@@ -1,0 +1,39 @@
+.background{
+    background: linear-gradient(102.83deg, #ED1BFF 8.31%, #141EFF 83.33%);
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+.title{
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 64px;
+    line-height: 120%;    
+    text-align: center;
+    color: white;
+    margin-top: 200px;
+    
+}
+
+select, option{
+    font-family: 'Rubik';
+}
+
+.custom-select{
+    width: 300px;
+    margin-top: 60px;
+}
+
+.sign-out{
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
+
+button{
+    font-family: 'Rubik';
+}

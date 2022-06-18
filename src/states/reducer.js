@@ -11,7 +11,7 @@ export default function reducer(prevState, action) {
     case "LOG_OUT":
       cachedState = {
         ...prevState,
-        userData: action.userData,
+        userData: {},
         isLoggedIn: false,
       };
       break;

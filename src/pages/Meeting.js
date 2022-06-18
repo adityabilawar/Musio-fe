@@ -1,22 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
-import styled from "styled-components";
-//import { v1 as uuid } from "uuid";
-
-const Container = styled.div`
-  height: 100vh;
-  width: 20%;
-`;
-
-const StyledVideo = styled.video`
-  width: 100%;
-  position: static;
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 1px;
-  border: 5px solid gray;
-`;
+import { FaPlay, FaShare, FaSignOutAlt } from "react-icons/fa";
+import "../css/meeting.css";
 
 const Video = (props) => {
   const ref = useRef();
@@ -27,7 +13,7 @@ const Video = (props) => {
     });
   }, [props.peer]);
 
-  return <StyledVideo playsInline autoPlay ref={ref} />;
+  return <video {...props} playsInline autoPlay ref={ref} />;
 };
 
 const Room = (props) => {
@@ -43,10 +29,6 @@ const Room = (props) => {
     height: window.innerHeight / 1.8,
     width: window.innerWidth / 2,
   };
-  useEffect(() => {
-    socketRef.current = io.connect("https://tohack-2022.herokuapp.com/");
-    createStream();
-  }, []);
 
   const createStream = () => {
     navigator.mediaDevices
@@ -139,11 +121,48 @@ const Room = (props) => {
     return peer;
   }
 
-  return (
-    <Container>
-      <StyledVideo muted ref={userVideo} autoPlay playsInline />
+  useEffect(() => {
+    socketRef.current = io.connect("https://tohack-2022.herokuapp.com/");
+    createStream();
+  }, []);
 
-      {peers.map((peer, index) => {
+  return (
+    <div class="background d-flex align-items-center justify-content-center flex-column">
+      <video muted class="user-video-0" ref={userVideo} autoPlay playsInline />
+
+      {peers[1] ? (
+        <Video class="user-video-1" peer={peers[1].peer} />
+      ) : (
+        <img
+          class="user-video-1"
+          src="https://cdn.discordapp.com/attachments/983046409873936494/987513500115021855/Musio.png"
+        />
+      )}
+
+      {peers[2] ? (
+        <Video class="user-video-2" peer={peers[2].peer} />
+      ) : (
+        <img
+          class="user-video-2"
+          src="https://cdn.discordapp.com/attachments/983046409873936494/987513500115021855/Musio.png"
+        />
+      )}
+
+      {peers[3] ? (
+        <Video class="user-video-3" peer={peers[3].peer} />
+      ) : (
+        <img
+          class="user-video-3"
+          src="https://cdn.discordapp.com/attachments/983046409873936494/987513500115021855/Musio.png"
+        />
+      )}
+
+      <div class="bottom-features d-flex align-items-center justify-content-center">
+        <FaSignOutAlt color="white" size={30} className="mx-5" />
+        <FaPlay color="#5BF921" size={30} className="mx-5" />
+        <FaShare color="white" size={30} className="mx-5" />
+      </div>
+      {/*peers.map((peer, index) => {
         let audioFlagTemp = true;
         let videoFlagTemp = true;
         if (userUpdate) {
@@ -159,8 +178,8 @@ const Room = (props) => {
             <Video peer={peer.peer} />
           </div>
         );
-      })}
-    </Container>
+      })*/}
+    </div>
   );
 };
 

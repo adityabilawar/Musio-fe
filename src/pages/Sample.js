@@ -2,5 +2,5 @@ import React from "react";
 import "../css/sample.css";
 
 export default function Sample() {
-  return <div>Hello</div>;
+  return <div>Helllooo </div>;
 }
