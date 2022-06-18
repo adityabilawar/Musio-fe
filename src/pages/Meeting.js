@@ -11,14 +11,13 @@ const Video = (props) => {
     props.peer.on("stream", (stream) => {
       ref.current.srcObject = stream;
     });
-  }, [props.peer]);
+  }, []);
 
   return <video {...props} playsInline autoPlay ref={ref} />;
 };
 
 const Room = (props) => {
   const [peers, setPeers] = useState([]);
-  const [userUpdate, setUserUpdate] = useState([]);
   const socketRef = useRef();
   const userVideo = useRef();
   const peersRef = useRef([]);
@@ -80,10 +79,6 @@ const Room = (props) => {
           const item = peersRef.current.find((p) => p.peerID === payload.id);
           item.peer.signal(payload.signal);
         });
-
-        socketRef.current.on("change", (payload) => {
-          setUserUpdate(payload);
-        });
       });
   };
 
@@ -130,8 +125,8 @@ const Room = (props) => {
     <div class="background d-flex align-items-center justify-content-center flex-column">
       <video muted class="user-video-0" ref={userVideo} autoPlay playsInline />
 
-      {peers[1] ? (
-        <Video class="user-video-1" peer={peers[1].peer} />
+      {peers[0] ? (
+        <Video class="user-video-1" peer={peers[0].peer} />
       ) : (
         <img
           class="user-video-1"
@@ -139,8 +134,8 @@ const Room = (props) => {
         />
       )}
 
-      {peers[2] ? (
-        <Video class="user-video-2" peer={peers[2].peer} />
+      {peers[1] ? (
+        <Video class="user-video-2" peer={peers[1].peer} />
       ) : (
         <img
           class="user-video-2"
@@ -148,8 +143,8 @@ const Room = (props) => {
         />
       )}
 
-      {peers[3] ? (
-        <Video class="user-video-3" peer={peers[3].peer} />
+      {peers[2] ? (
+        <Video class="user-video-3" peer={peers[2].peer} />
       ) : (
         <img
           class="user-video-3"
