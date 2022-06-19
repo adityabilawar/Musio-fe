@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import "../css/edit.css";
 import { Context } from "../states/Provider";
 import {
@@ -14,11 +14,11 @@ import { RiSoundModuleFill } from "react-icons/ri";
 import { IoSpeedometerSharp } from "react-icons/io5";
 import { BsYoutube } from "react-icons/bs";
 
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 
 export default function Edit() {
-  const [state, dispatch] = useContext(Context);
-  const navigate = useNavigate();
+  const [state] = useContext(Context);
+  //const navigate = useNavigate();
 
   return (
     <div class="background d-flex align-items-center justify-content-center">
@@ -40,7 +40,7 @@ export default function Edit() {
           size={30}
           className="mx-4"
           onClick={() => {
-            navigate("/select");
+            window.location.href = "/select";
           }}
         />
       </div>

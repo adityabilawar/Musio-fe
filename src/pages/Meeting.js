@@ -276,7 +276,7 @@ const Room = (props) => {
           size={30}
           className="mx-5"
           onClick={() => {
-            navigate("/select");
+            window.location.href = "/select";
           }}
         />
         {recording ? (
