@@ -353,7 +353,7 @@ const Room = (props) => {
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Example Modal"
+        contentLabel="Invite friends"
       >
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Invite</h2>
         <div class="d-flex align-items-center mt-3">
