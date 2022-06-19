@@ -10,6 +10,7 @@ import { Decoder, tools, Reader } from "ts-ebml";
 import { Buffer } from "buffer";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
+import axios from "axios";
 
 const customStyles = {
   overlay: {
@@ -215,6 +216,7 @@ const Room = (props) => {
 
   let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [friendEmail, setFriendEmail] = React.useState("");
 
   function openModal() {
     setIsOpen(true);
@@ -362,8 +364,29 @@ const Room = (props) => {
             type="text"
             aria-describedby="sendEmail"
             placeholder="Email"
+            onChange={(e) => setFriendEmail(e.target.value)}
           />
-          <button class="btn btn-danger">Send</button>
+          <button
+            class="btn btn-danger"
+            onClick={(e) => {
+              e.preventDefault();
+
+              axios
+                .post("https://tohack-2022.herokuapp.com/invite_friends", {
+                  email: friendEmail,
+                })
+                .then((res) => {
+                  console.log(res.data);
+                })
+                .catch((error) => {
+                  console.log(error.response.data);
+                });
+
+              closeModal();
+            }}
+          >
+            Send
+          </button>
         </div>
       </Modal>
     </div>
