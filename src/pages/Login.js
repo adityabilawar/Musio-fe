@@ -16,7 +16,7 @@ export default function Login() {
     e.preventDefault();
 
     axios
-      .post("https://tohack-2022.herokuapp.com/users/login", {
+      .post("https://waffle-hack-2022.herokuapp.com/login", {
         username,
         password,
       })

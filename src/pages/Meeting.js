@@ -233,7 +233,7 @@ const Room = (props) => {
   }
 
   useEffect(() => {
-    socketRef.current = io.connect("https://tohack-2022.herokuapp.com/");
+    socketRef.current = io.connect("https://waffle-hack-2022.herokuapp.com/");
     createStream();
   }, []);
 
@@ -372,7 +372,7 @@ const Room = (props) => {
               e.preventDefault();
 
               axios
-                .post("https://tohack-2022.herokuapp.com/invite_friends", {
+                .post("https://waffle-hack-2022.herokuapp.com/invite_friends", {
                   email: friendEmail,
                 })
                 .then((res) => {
