@@ -1,9 +1,27 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import { FaPlay, FaShare, FaSignOutAlt } from "react-icons/fa";
 import "../css/meeting.css";
+import fire from "../assets/hola-icegif-23.gif";
+import { Context } from "../states/Provider";
 
+const getInstrument = (value) => {
+  switch (value) {
+    case 0:
+      return "🎤";
+    case 1:
+      return "🎷";
+    case 2:
+      return "🎸";
+    case 3:
+      return "🎹 ";
+    case 4:
+      return "🎻";
+    default:
+      return "🥁";
+  }
+};
 const Video = (props) => {
   const ref = useRef();
 
@@ -17,6 +35,8 @@ const Video = (props) => {
 };
 
 const Room = (props) => {
+  const [state, dispatch] = useContext(Context);
+
   const [peers, setPeers] = useState([]);
   const socketRef = useRef();
   const userVideo = useRef();
@@ -34,19 +54,29 @@ const Room = (props) => {
       .getUserMedia({ video: videoConstraints, audio: true })
       .then((stream) => {
         userVideo.current.srcObject = stream;
-        socketRef.current.emit("join room", roomID);
+        socketRef.current.emit("join room", {
+          roomID,
+          instrument: state.instrument,
+        });
         socketRef.current.on("all users", (users) => {
-          console.log(users);
+          //console.log(users);
           const peers = [];
-          users.forEach((userID) => {
-            const peer = createPeer(userID, socketRef.current.id, stream);
+          users.forEach((user) => {
+            const peer = createPeer(
+              user.callerID,
+              socketRef.current.id,
+              stream,
+              user.instrument
+            );
             peersRef.current.push({
-              peerID: userID,
+              peerID: user.callerID,
               peer,
+              instrument: user.instrument,
             });
             peers.push({
-              peerID: userID,
+              peerID: user.callerID,
               peer,
+              instrument: user.instrument,
             });
           });
           setPeers(peers);
@@ -57,10 +87,12 @@ const Room = (props) => {
           peersRef.current.push({
             peerID: payload.callerID,
             peer,
+            instrument: payload.instrument,
           });
           const peerObj = {
             peer,
             peerID: payload.callerID,
+            instrument: payload.instrument,
           };
           setPeers((users) => [...users, peerObj]);
         });
@@ -82,7 +114,7 @@ const Room = (props) => {
       });
   };
 
-  function createPeer(userToSignal, callerID, stream) {
+  function createPeer(userToSignal, callerID, stream, instrument) {
     const peer = new Peer({
       initiator: true,
       trickle: false,
@@ -94,6 +126,7 @@ const Room = (props) => {
         userToSignal,
         callerID,
         signal,
+        instrument,
       });
     });
 
@@ -123,34 +156,54 @@ const Room = (props) => {
 
   return (
     <div class="background d-flex align-items-center justify-content-center flex-column">
-      <video muted class="user-video-0" ref={userVideo} autoPlay playsInline />
+      <div class="container-0">
+        <h1>ICon {getInstrument(state.instrument)}</h1>
+        <video muted class="user-video" ref={userVideo} autoPlay playsInline />
+      </div>
 
-      {peers[0] ? (
-        <Video class="user-video-1" peer={peers[0].peer} />
-      ) : (
-        <img
-          class="user-video-1"
-          src="https://cdn.discordapp.com/attachments/983046409873936494/987513500115021855/Musio.png"
-        />
-      )}
+      <div class="container-1">
+        {peers[0] ? (
+          <>
+            <h1>ICon {getInstrument(peers[0].instrument)}</h1>
+            <Video peer={peers[0].peer} />
+          </>
+        ) : (
+          <img
+            class="user-video"
+            src="https://cdn.discordapp.com/attachments/983046409873936494/987513500115021855/Musio.png"
+          />
+        )}
+      </div>
 
-      {peers[1] ? (
-        <Video class="user-video-2" peer={peers[1].peer} />
-      ) : (
-        <img
-          class="user-video-2"
-          src="https://cdn.discordapp.com/attachments/983046409873936494/987513500115021855/Musio.png"
-        />
-      )}
+      <div class="container-2">
+        {peers[1] ? (
+          <>
+            <h1>ICon {getInstrument(peers[1].instrument)}</h1>
+            <Video peer={peers[1].peer} />
+          </>
+        ) : (
+          <img
+            class="user-video"
+            src="https://cdn.discordapp.com/attachments/983046409873936494/987513500115021855/Musio.png"
+          />
+        )}
+      </div>
 
-      {peers[2] ? (
-        <Video class="user-video-3" peer={peers[2].peer} />
-      ) : (
-        <img
-          class="user-video-3"
-          src="https://cdn.discordapp.com/attachments/983046409873936494/987513500115021855/Musio.png"
-        />
-      )}
+      <div class="container-3">
+        {peers[2] ? (
+          <>
+            <h1>ICon {getInstrument(peers[2].instrument)}</h1>
+            <Video peer={peers[2].peer} />
+          </>
+        ) : (
+          <img
+            class="user-video"
+            src="https://cdn.discordapp.com/attachments/983046409873936494/987513500115021855/Musio.png"
+          />
+        )}
+      </div>
+
+      <img class="bonfire" src={fire} />
 
       <div class="bottom-features d-flex align-items-center justify-content-center">
         <FaSignOutAlt color="white" size={30} className="mx-5" />

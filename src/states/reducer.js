@@ -15,6 +15,12 @@ export default function reducer(prevState, action) {
         isLoggedIn: false,
       };
       break;
+    case "SELECT_INSTRUMENT":
+      cachedState = {
+        ...prevState,
+        instrument: action.instrument,
+      };
+      break;
     default:
       cachedState = prevState;
   }

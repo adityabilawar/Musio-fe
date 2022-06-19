@@ -27,6 +27,12 @@ export default function Instrument() {
           class="form-select custom-select mb-5"
           aria-label="Instrument select"
           size="6"
+          onChange={(e) => {
+            dispatch({
+              type: "SELECT_INSTRUMENT",
+              instrument: e.target.value,
+            });
+          }}
         >
           <option value="0">🎤 Vocal</option>
           <option value="1">🎷 Saxophone</option>
