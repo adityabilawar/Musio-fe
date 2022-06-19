@@ -7,7 +7,7 @@ import fire from "../assets/hola-icegif-23.gif";
 import { Context } from "../states/Provider";
 
 const getInstrument = (value) => {
-  switch (value) {
+  switch (parseInt(value)) {
     case 0:
       return "🎤";
     case 1:
