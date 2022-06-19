@@ -157,14 +157,14 @@ const Room = (props) => {
   return (
     <div class="background d-flex align-items-center justify-content-center flex-column">
       <div class="container-0">
-        <h1>ICon {getInstrument(state.instrument)}</h1>
+        <h1>{getInstrument(state.instrument)}</h1>
         <video muted class="user-video" ref={userVideo} autoPlay playsInline />
       </div>
 
       <div class="container-1">
         {peers[0] ? (
           <>
-            <h1>ICon {getInstrument(peers[0].instrument)}</h1>
+            <h1>{getInstrument(peers[0].instrument)}</h1>
             <Video peer={peers[0].peer} />
           </>
         ) : (
@@ -178,7 +178,7 @@ const Room = (props) => {
       <div class="container-2">
         {peers[1] ? (
           <>
-            <h1>ICon {getInstrument(peers[1].instrument)}</h1>
+            <h1>{getInstrument(peers[1].instrument)}</h1>
             <Video peer={peers[1].peer} />
           </>
         ) : (
@@ -192,7 +192,7 @@ const Room = (props) => {
       <div class="container-3">
         {peers[2] ? (
           <>
-            <h1>ICon {getInstrument(peers[2].instrument)}</h1>
+            <h1>{getInstrument(peers[2].instrument)}</h1>
             <Video peer={peers[2].peer} />
           </>
         ) : (
