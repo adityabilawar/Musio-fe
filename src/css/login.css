@@ -1,0 +1,65 @@
+.background{
+    background: linear-gradient(102.83deg, #ED1BFF 8.31%, #141EFF 83.33%);
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+.login-form{
+    width: 500px;
+    height: 450px;
+    background-color: white;
+}
+
+.login-title {
+    font-family: 'Rubik';
+    font-size: 40px;
+    color: black
+}
+
+
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.left {
+    left: 0;
+    background-color: white;
+}
+
+.right {
+    right: 0;
+    background: linear-gradient(102.83deg, #ED1BFF 8.31%, #141EFF 83.33%);
+}
+
+.login-form{
+    width: 500px;
+    height: 450px;
+    background-color: white;
+    border-radius: 30px;
+}
+
+.login-title {
+    font-family: 'Rubik';
+    font-size: 45px;
+    color: black
+}
+
+.login-form input {
+    width: 350px;
+}
+.login-form {
+    font-family: 'Rubik';
+}
+
+.login-form label { 
+    font-size: 18px
+}
