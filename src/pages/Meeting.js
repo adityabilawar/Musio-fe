@@ -31,7 +31,7 @@ const Video = (props) => {
     });
   }, []);
 
-  return <video {...props} playsInline autoPlay ref={ref} />;
+  return <video {...props} class="user-video" playsInline autoPlay ref={ref} />;
 };
 
 const Room = (props) => {
