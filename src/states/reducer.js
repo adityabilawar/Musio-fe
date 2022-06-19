@@ -21,6 +21,12 @@ export default function reducer(prevState, action) {
         instrument: action.instrument,
       };
       break;
+    case "RECORDED_VIDEO":
+      cachedState = {
+        ...prevState,
+        video_url: action.video_url,
+      };
+      break;
     default:
       cachedState = prevState;
   }

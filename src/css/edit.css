@@ -1,0 +1,23 @@
+.background{
+    background: linear-gradient(102.83deg, #ED1BFF 8.31%, #141EFF 83.33%);
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+}
+
+
+.edit-video {
+    width: 900px;
+    background-color: black;
+    border: 1px solid white;
+}
+
+.bottom-features{
+    background-color: black;
+    height: 70px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}

@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
-import { FaPlay, FaShare, FaSignOutAlt } from "react-icons/fa";
+import { FaPlay, FaShare, FaSignOutAlt, FaStop, FaCheck } from "react-icons/fa";
 import "../css/meeting.css";
 import fire from "../assets/hola-icegif-23.gif";
 import { Context } from "../states/Provider";
+import { useReactMediaRecorder } from "react-media-recorder";
+import { Decoder, tools, Reader } from "ts-ebml";
+import { Buffer } from "buffer";
+import { useNavigate } from "react-router-dom";
+
+window.Buffer = window.Buffer || Buffer;
 
 const getInstrument = (value) => {
   switch (parseInt(value)) {
@@ -22,6 +28,41 @@ const getInstrument = (value) => {
       return "🥁";
   }
 };
+
+const readAsArrayBuffer = (blob) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(blob);
+    reader.onloadend = () => {
+      resolve(reader.result);
+    };
+    reader.onerror = (ev) => {
+      reject(ev);
+    };
+  });
+};
+
+const injectMetadata = (blob) => {
+  const decoder = new Decoder();
+  const reader = new Reader();
+  reader.logging = false;
+  reader.drop_default_duration = false;
+  return readAsArrayBuffer(blob).then((buffer) => {
+    const elms = decoder.decode(buffer);
+    elms.forEach((elm) => {
+      reader.read(elm);
+    });
+    reader.stop();
+    const refinedMetadataBuf = tools.makeMetadataSeekable(
+      reader.metadatas,
+      reader.duration,
+      reader.cues
+    );
+    const body = buffer.slice(reader.metadataSize);
+    return new Blob([refinedMetadataBuf, body], { type: blob.type });
+  });
+};
+
 const Video = (props) => {
   const ref = useRef();
 
@@ -35,8 +76,12 @@ const Video = (props) => {
 };
 
 const Room = (props) => {
-  const [state, dispatch] = useContext(Context);
+  const navigate = useNavigate();
 
+  const [recording, setRecording] = useState(false);
+  const [state, dispatch] = useContext(Context);
+  const { status, startRecording, stopRecording, mediaBlobUrl } =
+    useReactMediaRecorder({ video: true, screen: true });
   const [peers, setPeers] = useState([]);
   const socketRef = useRef();
   const userVideo = useRef();
@@ -154,6 +199,26 @@ const Room = (props) => {
     createStream();
   }, []);
 
+  useEffect(() => {
+    if (status == "stopped") {
+      (async () => {
+        setRecording(false);
+
+        const mediaBlob = await fetch(mediaBlobUrl || "").then((response) =>
+          response.blob()
+        );
+
+        const seekableBlob = await injectMetadata(mediaBlob);
+
+        const url = URL.createObjectURL(seekableBlob);
+        dispatch({
+          type: "RECORDED_VIDEO",
+          video_url: url,
+        });
+      })();
+    }
+  }, [status]);
+
   return (
     <div class="background d-flex align-items-center justify-content-center flex-column">
       <div class="container-0">
@@ -164,7 +229,7 @@ const Room = (props) => {
       <div class="container-1">
         {peers[0] ? (
           <>
-            <h1>{getInstrument(peers[0].instrument)}</h1>
+            <h1>{getInstrument(1)}</h1>
             <Video peer={peers[0].peer} />
           </>
         ) : (
@@ -178,7 +243,7 @@ const Room = (props) => {
       <div class="container-2">
         {peers[1] ? (
           <>
-            <h1>{getInstrument(peers[1].instrument)}</h1>
+            <h1>{getInstrument(2)}</h1>
             <Video peer={peers[1].peer} />
           </>
         ) : (
@@ -192,7 +257,7 @@ const Room = (props) => {
       <div class="container-3">
         {peers[2] ? (
           <>
-            <h1>{getInstrument(peers[2].instrument)}</h1>
+            <h1>{getInstrument(3)}</h1>
             <Video peer={peers[2].peer} />
           </>
         ) : (
@@ -207,26 +272,38 @@ const Room = (props) => {
 
       <div class="bottom-features d-flex align-items-center justify-content-center">
         <FaSignOutAlt color="white" size={30} className="mx-5" />
-        <FaPlay color="#5BF921" size={30} className="mx-5" />
+        {recording ? (
+          <FaStop
+            color="red"
+            size={30}
+            className="mx-5"
+            onClick={() => {
+              stopRecording();
+            }}
+          />
+        ) : (
+          <FaPlay
+            color="#5BF921"
+            size={30}
+            className="mx-5"
+            onClick={() => {
+              startRecording();
+              setRecording(true);
+            }}
+          />
+        )}
         <FaShare color="white" size={30} className="mx-5" />
+        {status == "stopped" && (
+          <FaCheck
+            color="#5BF921"
+            size={30}
+            className="mx-5"
+            onClick={() => {
+              navigate("/edit");
+            }}
+          />
+        )}
       </div>
-      {/*peers.map((peer, index) => {
-        let audioFlagTemp = true;
-        let videoFlagTemp = true;
-        if (userUpdate) {
-          userUpdate.forEach((entry) => {
-            if (peer && peer.peerID && peer.peerID === entry.id) {
-              audioFlagTemp = entry.audioFlag;
-              videoFlagTemp = entry.videoFlag;
-            }
-          });
-        }
-        return (
-          <div key={peer.peerID}>
-            <Video peer={peer.peer} />
-          </div>
-        );
-      })*/}
     </div>
   );
 };

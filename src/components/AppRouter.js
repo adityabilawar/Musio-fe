@@ -5,6 +5,7 @@ import Register from "../pages/Register";
 import Meeting from "../pages/Meeting";
 import Sample from "../pages/Sample";
 import Instrument from "../pages/Instrument";
+import Edit from "../pages/Edit";
 
 export default function AppRouter() {
   return (
@@ -14,6 +15,7 @@ export default function AppRouter() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/meeting" element={<Meeting />} />
+        <Route path="/edit" element={<Edit />} />
         <Route path="/sample" element={<Sample />} />
       </Routes>
     </Router>
