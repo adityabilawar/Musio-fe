@@ -62,3 +62,8 @@
 h1{
     position: absolute;
 }
+
+.send-email-input{
+    margin-right: 10px;
+    width: 300px;
+}

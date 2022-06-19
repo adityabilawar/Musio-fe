@@ -9,6 +9,25 @@ import { useReactMediaRecorder } from "react-media-recorder";
 import { Decoder, tools, Reader } from "ts-ebml";
 import { Buffer } from "buffer";
 import { useNavigate } from "react-router-dom";
+import Modal from "react-modal";
+
+const customStyles = {
+  overlay: {
+    "background-color": "rgba(0, 0, 0, 0.75)",
+  },
+  content: {
+    fontFamily: "Rubik",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
+// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
+Modal.setAppElement("#root");
 
 window.Buffer = window.Buffer || Buffer;
 
@@ -194,6 +213,23 @@ const Room = (props) => {
     return peer;
   }
 
+  let subtitle;
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+    console.log("hello");
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    subtitle.style.color = "#f00";
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   useEffect(() => {
     socketRef.current = io.connect("https://tohack-2022.herokuapp.com/");
     createStream();
@@ -299,7 +335,7 @@ const Room = (props) => {
             }}
           />
         )}
-        <FaShare color="white" size={30} className="mx-5" />
+        <FaShare color="white" size={30} className="mx-5" onClick={openModal} />
         {status == "stopped" && (
           <FaCheck
             color="#5BF921"
@@ -311,6 +347,25 @@ const Room = (props) => {
           />
         )}
       </div>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Invite</h2>
+        <div class="d-flex align-items-center mt-3">
+          <input
+            class="send-email-input"
+            type="text"
+            aria-describedby="sendEmail"
+            placeholder="Email"
+          />
+          <button class="btn btn-danger">Send</button>
+        </div>
+      </Modal>
     </div>
   );
 };
