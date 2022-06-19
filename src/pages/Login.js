@@ -25,7 +25,7 @@ export default function Login() {
           type: "LOG_IN",
           userData: res.data,
         });
-        navigate("/");
+        navigate("/select");
       })
       .catch((error) => {
         setFormError(error.response.data);

@@ -1,5 +1,10 @@
 import * as React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Meeting from "../pages/Meeting";
@@ -11,7 +16,8 @@ export default function AppRouter() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Instrument />} />
+        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/select" element={<Instrument />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/meeting" element={<Meeting />} />

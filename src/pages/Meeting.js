@@ -271,7 +271,14 @@ const Room = (props) => {
       <img class="bonfire" src={fire} />
 
       <div class="bottom-features d-flex align-items-center justify-content-center">
-        <FaSignOutAlt color="white" size={30} className="mx-5" />
+        <FaSignOutAlt
+          color="white"
+          size={30}
+          className="mx-5"
+          onClick={() => {
+            navigate("/select");
+          }}
+        />
         {recording ? (
           <FaStop
             color="red"

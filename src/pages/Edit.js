@@ -40,7 +40,7 @@ export default function Edit() {
           size={30}
           className="mx-4"
           onClick={() => {
-            navigate("/");
+            navigate("/select");
           }}
         />
       </div>
