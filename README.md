@@ -26,7 +26,7 @@ We learned how WebRTC may be praised for its low latency peer-to-peer connection
 ## What's next for Musio
 We want to add a feature where people who do not have instruments can play the instrument virtually on their computer during their Musio session to get rid of the digital divide between users who have instruments at their hands. We also want to include live audiences and have them be able to add reactions/emotes visible to the video recording(kind of like Twitch) to make the application lively and interactive for viewers watching people play Musio.
 
-#Our Backend
+# Our Backend
 Here is the link to our backend repo https://github.com/adityabilawar/WaffleHacks-Backend 
 We built our backend using Express.js, Node.js, and cockroachDB.
 
